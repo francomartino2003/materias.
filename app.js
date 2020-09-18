@@ -1,25 +1,30 @@
 
-var atributos = ["numeros","no_numeros","letras","no_letras", "1_año", "2_año", "3_año", "4_año", "5_año","no_5_año"];
+var atributos = {numeros:null, letras:null, año1:null, año2:null, año3:null, año4:null, año5:null};
 
 var m1 = {
   nombre : "matematica",
-  att : ["numeros","no_letras", "1_año", "2_año", "3_año", "4_año", "5_año"]
+  att : {numeros:true, letras:false, año1:true, año2: true, año3:true, año4:true, año5:true}
 };
 
 var m2 = {
   nombre : "lengua",
-  att : ["letras","no_numeros","1_año", "2_año", "3_año", "4_año", "5_año"]
+  att : {letras:true, numeros:false, año1: true, año2:true, año3:true, año4: true, año5:true}
 };
 
 var m3 = {
-  nombre : "geografia",
-  att : ["letras", "no_numeros","1_año", "2_año", "3_año", "4_año", "no_5_año"]
+  nombre : "geografiaa",
+  att : {letras:true, numeros:false, año1:true, año2:true, año3:true, año4:true, año5:false}
 };
 
 
 var tu_materia = function(){
-  var datos = tomar_datos();
-  var rta = comparar_datos(datos); //devuleve m1, m2, m3 o null
+  tomar_datos();
+  console.log(atributos);
+  var rta = comparar_datos(); //devuleve m1, m2, m3 o null
+  console.log(rta);
+  console.log(rta);
+  console.log(rta);
+
   if (rta != null) {
     return "tu materia es: " + rta.nombre;
   }else {
@@ -27,67 +32,56 @@ var tu_materia = function(){
   }
 };
 
+
 function tomar_datos(){
-  var datos = [];
   if (confirm("la materia es de letras?")) {
-    datos.push("letras");
+    atributos.letras = true;
+    atributos.numeros = false;
   }else {
-    datos.push("no_letras");
+    atributos.letras = false;
     if (confirm("la materia es de numeros?")) {
-      datos.push("numeros");
+      atributos.numeros = true;
     }else {
-      datos.push("no_numeros");
+      atributos.numeros = false;
     }
   }
   if (confirm("la materia esta en 1año?")) {
-    datos.push("1_año");
+    atributos.año1 = true;
   }else {
-    datos.push("no_1_año");
+    atributos.año1 = false;
   }
   if (confirm("la materia esta en 5año?")) {
-    datos.push("5_año");
+    atributos.año5 = true;
   }else {
-    datos.push("no_5_año");
+    atributos.año5 = false;
   }
-  return datos;
-}
+};
 
-function comparar_datos(datos){
-  var iguales = 0;
-  for (var i = 0; i < datos.length; i++) {
-    for (var j = 0; j < m1.att.length; j++) {
-      if (datos[i] == m1.att[j]) {
-        iguales++;
+function comparar_datos(){
+  var iguales = {m1:0, m2:0, m3:0};
+  for (var i in atributos) {
+      if (atributos[i] == m1.att[i]) {
+        iguales.m1++;
       }
-    }
-  }
-  if (iguales == datos.length) {
-    return(m1);
-  }else {
-    iguales = 0;
-    for (var i = 0; i < datos.length; i++) {
-      for (var j = 0; j < m2.att.length; j++) {
-        if (datos[i] == m2.att[j]) {
-          iguales++;
-        }
+      if (atributos[i] == m2.att[i]) {
+        iguales.m2++;
       }
-    }
-    if (iguales == datos.length) {
-      return(m2);
-    }else {
-      iguales = 0;
-      for (var i = 0; i < datos.length; i++) {
-        for (var j = 0; j < m3.att.length; j++) {
-          if (datos[i] == m3.att[j]) {
-            iguales++;
-          }
-        }
-      }
-      if (iguales == datos.length) {
-        return(m3);
-      }else {
-        return null;
+      if (atributos[i] == m3.att[i]) {
+        iguales.m3++;
       }
   }
-}
+  console.log(iguales);
+  max = Math.max(iguales.m1, iguales.m2, iguales.m3);
+  console.log(max);
+  if (iguales.m1 == max) {
+    return m1;
+  }
+  if (iguales.m2 == max) {
+    return m2;
+  }
+  if (iguales.m3 == max) {
+    return m3;
+  }
+
+  atributos = {numeros:null, letras:null, año1:null, año2:null, año3:null, año4:null, año5:null};
 };
