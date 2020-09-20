@@ -1,87 +1,61 @@
+var atributos = ["numeros", "letras", "año1", "año2", "año3", "año4", "año5"];
 
-var atributos = {numeros:null, letras:null, año1:null, año2:null, año3:null, año4:null, año5:null};
-
-var m1 = {
-  nombre : "matematica",
-  att : {numeros:true, letras:false, año1:true, año2: true, año3:true, año4:true, año5:true}
-};
-
-var m2 = {
-  nombre : "lengua",
-  att : {letras:true, numeros:false, año1: true, año2:true, año3:true, año4: true, año5:true}
-};
-
-var m3 = {
-  nombre : "geografiaa",
-  att : {letras:true, numeros:false, año1:true, año2:true, año3:true, año4:true, año5:false}
-};
-
+var materias = [
+  {nombre : "matematica",
+   attr : {numeros:true, letras:false, año1:true, año2: true, año3:true, año4:true, año5:true, iguales:0}
+  },
+  {nombre : "lengua",
+   attr : {letras:true, numeros:false, año1: true, año2:true, año3:true, año4: true, año5:true, iguales:0}
+  },
+  {nombre : "geografia",
+   attr : {letras:true, numeros:false, año1:true, año2:true, año3:true, año4:true, año5:false, iguales:0}
+  }
+];
 
 var tu_materia = function(){
-  tomar_datos();
-  console.log(atributos);
-  var rta = comparar_datos(); //devuleve m1, m2, m3 o null
-  console.log(rta);
-  console.log(rta);
-  console.log(rta);
-
+  var data = tomar_datos();
+  var rta = comparar_datos(data);
   if (rta != null) {
-    return "tu materia es: " + rta.nombre;
+    return "tu materia es: " + rta;
   }else {
     return "no se cual es tu materia :(";
   }
 };
 
-
 function tomar_datos(){
-  if (confirm("la materia es de letras?")) {
-    atributos.letras = true;
-    atributos.numeros = false;
-  }else {
-    atributos.letras = false;
-    if (confirm("la materia es de numeros?")) {
-      atributos.numeros = true;
+  data = {};
+  for (var i = 0; i < atributos.length; i++) {
+    if (confirm("tu materia es de / esta en " + atributos[i] + " ?")) {
+      data[atributos[i]] = true;
     }else {
-      atributos.numeros = false;
+      data[atributos[i]] = false;
     }
   }
-  if (confirm("la materia esta en 1año?")) {
-    atributos.año1 = true;
-  }else {
-    atributos.año1 = false;
-  }
-  if (confirm("la materia esta en 5año?")) {
-    atributos.año5 = true;
-  }else {
-    atributos.año5 = false;
-  }
+  return data;
 };
 
-function comparar_datos(){
-  var iguales = {m1:0, m2:0, m3:0};
-  for (var i in atributos) {
-      if (atributos[i] == m1.att[i]) {
-        iguales.m1++;
+function comparar_datos(data){
+  for (var i in data) {
+      for (var j = 0; j < materias.length; j++) {
+        if (data[i] == materias[j].attr[i]) {
+          materias[j].attr.iguales++;
+        }
       }
-      if (atributos[i] == m2.att[i]) {
-        iguales.m2++;
-      }
-      if (atributos[i] == m3.att[i]) {
-        iguales.m3++;
-      }
-  }
-  console.log(iguales);
-  max = Math.max(iguales.m1, iguales.m2, iguales.m3);
-  console.log(max);
-  if (iguales.m1 == max) {
-    return m1;
-  }
-  if (iguales.m2 == max) {
-    return m2;
-  }
-  if (iguales.m3 == max) {
-    return m3;
   }
 
-  atributos = {numeros:null, letras:null, año1:null, año2:null, año3:null, año4:null, año5:null};
+  mayor = [null,0]; // mayor = [indice materias, numero iguales]
+  for (var i = 0; i < materias.length; i++) {
+    if ((mayor[0] == null) || (materias[i].attr.iguales > mayor[1])) {
+      mayor[0] = i;
+      mayor[1] = materias[i].attr.iguales
+    }
+    materias[i].attr.iguales = 0;
+  }
+  return materias[mayor[0]].nombre;
+};
+
+function agregar_materia(nombre, attr){
+  var length = materias.push({"nombre" : nombre, "attr" : attr});
+  materias[(length - 1)].attr.iguales = 0;
+  console.log(materias);
 };
