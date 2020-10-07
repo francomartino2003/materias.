@@ -1,19 +1,15 @@
 var atributos = ["numeros", "letras", "año1", "año2", "año3", "año4", "año5"];
 
 var materias = {
-  "matematica": {numeros:true, letras:false, año1:true, año2: true, año3:true, año4:true, año5:true, iguales:0},
-  "lengua": {letras:true, numeros:false, año1: true, año2:true, año3:true, año4: true, año5:true, iguales:0},
-  "geografia":{letras:true, numeros:false, año1:true, año2:true, año3:true, año4:true, año5:false, iguales:0}
+  "matematica": {numeros:true, letras:false, año1:true, año2: true, año3:true, año4:true, año5:true},
+  "lengua": {letras:true, numeros:false, año1: true, año2:true, año3:true, año4: true, año5:true},
+  "geografia":{letras:true, numeros:false, año1:true, año2:true, año3:true, año4:true, año5:false}
 };
 
 var tu_materia = function(){
   var data = tomar_datos();
   var rta = comparar_datos(data);
-  if (rta != null) {
-    return "tu materia es: " + rta;
-  }else {
-    return "no se cual es tu materia :(";
-  }
+  confirmar_respuesta(rta,data);
 };
 
 function tomar_datos(){
@@ -29,32 +25,31 @@ function tomar_datos(){
 };
 
 function comparar_datos(data){
-  for (var i in data) {
+    var mayor_valor = 0;
+    var mayor_materia = null;
     for (var f in materias) {
-      if (data[i] == materias[f][i]) {
-        materias[f].iguales++;
+      var iguales = 0;
+      for (var i in data) {
+        if (data[i] == materias[f][i]) {
+          iguales++;
+        }
+      }
+      if (iguales > mayor_valor) {
+        mayor_valor = iguales;
+        mayor_materia = f;
       }
     }
-  }
-  key = null;
-  n_iguales = 0;
-  for (var i in materias) {
-    if ((key == null) || (materias[i].iguales > n_iguales)) {
-      key = i;
-      n_iguales = materias[i].iguales
-    }
-    materias[i].iguales = 0;
-  }
-  return key;
+   return mayor_materia;
 };
 
 function agregar_materia(nombre, attr){
-  if (materias[nombre]) {
-    console.log("la materia ya existe");
-  }else {
     materias[nombre] = attr;
-    materias[nombre].iguales = 0;
-  }
+    if (materias[nombre]) {
+      console.log("se cambiaron los atributos de: " + nombre);
+    }else {
+      console.log("se agrego la materia: " + nombre);
+    }
+    console.log(materias[nombre]);
 };
 
 function agregar_atributo(materia,attr,valor){
@@ -72,4 +67,15 @@ function agregar_atributo(materia,attr,valor){
   }
 };
 
-//{numeros:true, letras:false, año1:false, año2: false, año3:false, año4:true, año5:true, iguales:0}
+function confirmar_respuesta(rta, data){
+  if (confirm("tu materia es " + rta + " ?")) {
+    console.log(rta);
+  }else {
+    var nueva_materia = prompt("cual era tu materia?");
+    if (nueva_materia) {
+      agregar_materia(nueva_materia,data);
+    }else {
+      console.log("no agregaste ninguna materia");
+    }
+  }
+};
