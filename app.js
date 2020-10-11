@@ -1,87 +1,81 @@
+var atributos = ["numeros", "letras", "año1", "año2", "año3", "año4", "año5"];
 
-var atributos = {numeros:null, letras:null, año1:null, año2:null, año3:null, año4:null, año5:null};
-
-var m1 = {
-  nombre : "matematica",
-  att : {numeros:true, letras:false, año1:true, año2: true, año3:true, año4:true, año5:true}
+var materias = {
+  "matematica": {numeros:true, letras:false, año1:true, año2: true, año3:true, año4:true, año5:true},
+  "lengua": {letras:true, numeros:false, año1: true, año2:true, año3:true, año4: true, año5:true},
+  "geografia":{letras:true, numeros:false, año1:true, año2:true, año3:true, año4:true, año5:false}
 };
-
-var m2 = {
-  nombre : "lengua",
-  att : {letras:true, numeros:false, año1: true, año2:true, año3:true, año4: true, año5:true}
-};
-
-var m3 = {
-  nombre : "geografiaa",
-  att : {letras:true, numeros:false, año1:true, año2:true, año3:true, año4:true, año5:false}
-};
-
 
 var tu_materia = function(){
-  tomar_datos();
-  console.log(atributos);
-  var rta = comparar_datos(); //devuleve m1, m2, m3 o null
-  console.log(rta);
-  console.log(rta);
-  console.log(rta);
-
-  if (rta != null) {
-    return "tu materia es: " + rta.nombre;
-  }else {
-    return "no se cual es tu materia :(";
-  }
+  var data = tomar_datos();
+  var rta = comparar_datos(data);
+  confirmar_respuesta(rta,data);
 };
-
 
 function tomar_datos(){
-  if (confirm("la materia es de letras?")) {
-    atributos.letras = true;
-    atributos.numeros = false;
-  }else {
-    atributos.letras = false;
-    if (confirm("la materia es de numeros?")) {
-      atributos.numeros = true;
+  data = {};
+  for (var i = 0; i < atributos.length; i++) {
+    if (confirm("tu materia es de / esta en " + atributos[i] + " ?")) {
+      data[atributos[i]] = true;
     }else {
-      atributos.numeros = false;
+      data[atributos[i]] = false;
     }
   }
-  if (confirm("la materia esta en 1año?")) {
-    atributos.año1 = true;
+  return data;
+};
+
+function comparar_datos(data){
+    var mayor_valor = 0;
+    var mayor_materia = null;
+    for (var materia in materias) {
+      var iguales = 0;
+      for (var key in data) {
+        if (data[key] == materias[materia][key]) {
+          iguales++;
+        }
+      }
+      if (iguales > mayor_valor) {
+        mayor_valor = iguales;
+        mayor_materia = materia;
+      }
+    }
+   return mayor_materia;
+};
+
+function agregar_materia(nombre, attr){
+    if (materias[nombre]) {
+      console.log("se cambiaron los atributos de: " + nombre);
+    }else {
+      console.log("se agrego la materia: " + nombre);
+    }
+    materias[nombre] = attr;
+    console.log(materias[nombre]);
+};
+
+function agregar_atributo(materia,attr,valor){
+  if (atributos.includes(attr)) {
+    console.log("el atributo ya existe");
   }else {
-    atributos.año1 = false;
-  }
-  if (confirm("la materia esta en 5año?")) {
-    atributos.año5 = true;
-  }else {
-    atributos.año5 = false;
+    atributos.push(attr);
+    for (var i in materias) {
+      if (i == materia) {
+        materias[i][attr] = valor;
+      }else {
+        materias[i][attr] = null;
+      }
+    }
   }
 };
 
-function comparar_datos(){
-  var iguales = {m1:0, m2:0, m3:0};
-  for (var i in atributos) {
-      if (atributos[i] == m1.att[i]) {
-        iguales.m1++;
-      }
-      if (atributos[i] == m2.att[i]) {
-        iguales.m2++;
-      }
-      if (atributos[i] == m3.att[i]) {
-        iguales.m3++;
-      }
+function confirmar_respuesta(rta, data){
+  if (confirm("tu materia es " + rta + " ?")) {
+    console.log(rta);
+  }else {
+    var nueva_materia = prompt("cual era tu materia?").toLowerCase();
+    if (nueva_materia) {
+      agregar_materia(nueva_materia,data);
+    }else {
+      console.log("no agregaste ninguna materia");
+    }
   }
-  console.log(iguales);
-  max = Math.max(iguales.m1, iguales.m2, iguales.m3);
-  console.log(max);
-  if (iguales.m1 == max) {
-    return m1;
-  }
-  if (iguales.m2 == max) {
-    return m2;
-  }
-  if (iguales.m3 == max) {
-    return m3;
-  }
-
-  atributos = {numeros:null, letras:null, año1:null, año2:null, año3:null, año4:null, año5:null};
 };
