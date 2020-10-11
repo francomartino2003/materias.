@@ -27,28 +27,28 @@ function tomar_datos(){
 function comparar_datos(data){
     var mayor_valor = 0;
     var mayor_materia = null;
-    for (var f in materias) {
+    for (var materia in materias) {
       var iguales = 0;
-      for (var i in data) {
-        if (data[i] == materias[f][i]) {
+      for (var key in data) {
+        if (data[key] == materias[materia][key]) {
           iguales++;
         }
       }
       if (iguales > mayor_valor) {
         mayor_valor = iguales;
-        mayor_materia = f;
+        mayor_materia = materia;
       }
     }
    return mayor_materia;
 };
 
 function agregar_materia(nombre, attr){
-    materias[nombre] = attr;
     if (materias[nombre]) {
       console.log("se cambiaron los atributos de: " + nombre);
     }else {
       console.log("se agrego la materia: " + nombre);
     }
+    materias[nombre] = attr;
     console.log(materias[nombre]);
 };
 
@@ -71,7 +71,7 @@ function confirmar_respuesta(rta, data){
   if (confirm("tu materia es " + rta + " ?")) {
     console.log(rta);
   }else {
-    var nueva_materia = prompt("cual era tu materia?");
+    var nueva_materia = prompt("cual era tu materia?").toLowerCase();
     if (nueva_materia) {
       agregar_materia(nueva_materia,data);
     }else {
