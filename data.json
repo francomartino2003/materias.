@@ -1,0 +1,9 @@
+
+{
+  "materias":{
+    "matematica":{"numeros":true,"letras":false,"año1":true,"año2":true,"año3":true,"año4":true,"año5":true},
+    "lengua":{"letras":true,"numeros":false,"año1":true,"año2":true,"año3":true,"año4":true,"año5":true},
+    "geografia":{"letras":true,"numeros":false,"año1":true,"año2":true,"año3":true,"año4":true,"año5":false}
+    },
+  "atributos":["numeros","letras","año1","año2","año3","año4","año5"]
+}

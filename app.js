@@ -1,16 +1,41 @@
-var atributos = ["numeros", "letras", "año1", "año2", "año3", "año4", "año5"];
 
-var materias = {
-  "matematica": {numeros:true, letras:false, año1:true, año2: true, año3:true, año4:true, año5:true},
-  "lengua": {letras:true, numeros:false, año1: true, año2:true, año3:true, año4: true, año5:true},
-  "geografia":{letras:true, numeros:false, año1:true, año2:true, año3:true, año4:true, año5:false}
-};
+var atributos = null;
+var materias = null;
+
+function handleFileSelect(){
+  if (window.File && window.FileReader && window.FileList && window.Blob) {
+  } else {
+      alert('The File APIs are not fully supported in this browser.');
+      return;
+  }
+  input = document.getElementById('fileinput');
+  if (!input) {
+    alert("Um, couldn't find the fileinput element.");
+  } else if (!input.files) {
+    alert("This browser doesn't seem to support the `files` property of file inputs.");
+  } else if (!input.files[0]) {
+    alert("Please select a file before clicking 'Load'");
+  } else {
+    file = input.files[0];
+    fr = new FileReader();
+    fr.onload = receivedText;
+    fr.readAsText(file);
+  }
+}
+
+function receivedText() {
+   var result = fr.result;
+   var jsonVar = JSON.parse(result);
+   materias = jsonVar.materias;
+   atributos = jsonVar.atributos;
+ }
 
 var tu_materia = function(){
   var data = tomar_datos();
-  var rta = comparar_datos(data); //rta[0] = materia; rta[1] = numero_iguales;
-  console.log(rta);
-  confirmar_respuesta(rta,data);
+  var rta = comparar_datos(data);
+  var materia = rta[0];
+  var num_iguales = rta[1];
+  confirmar_respuesta(materia, num_iguales, data);
 };
 
 function tomar_datos(){
@@ -70,14 +95,14 @@ function agregar_atributo(materia){
   }
 };
 
-function confirmar_respuesta(rta, data){
-  if (confirm("tu materia es " + rta[0] + " ?")) {
-    console.log(rta[0]);
+function confirmar_respuesta(materia, num_iguales, data){
+  if (confirm("tu materia es " + materia + " ?")) {
+    console.log(materia);
   }else {
     var nueva_materia = prompt("cual era tu materia?").toLowerCase();
     if (nueva_materia) {
       agregar_materia(nueva_materia,data);
-      if (atributos.length == rta[1]) {
+      if (atributos.length == num_iguales) {
         agregar_atributo(nueva_materia);
       }
     }else {

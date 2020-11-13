@@ -6,6 +6,13 @@
     <script src="app.js" charset="utf-8"></script>
   </head>
   <body>
-    MATERIAS
+    <h1>MATERIAS</h1>
+    <p>selecciona el archivo JSON</p>
+    <input type="file" id="fileinput"/>
+    <input type='button' id='btnLoad' value='Load' onclick='handleFileSelect();'>
+    <br>
+    <br>
+    <p>haz click para que adivine tu materia</p>
+    <input type='button' value='TU MATERIA' onclick='tu_materia();'>
   </body>
 </html>
